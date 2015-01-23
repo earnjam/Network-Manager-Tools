@@ -112,7 +112,7 @@ class NMT_Plugin_Manager {
 	 */
 	 
 		public function plugin_installed_options_link( $install_actions, $api, $plugin_file ) { 
-  			$newLink = '<a href="' . wp_nonce_url( 'plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=all' ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network') . '" class="edit">' . __('Network Enable') . '</a>';
+  			$newLink = '<a href="' . wp_nonce_url( 'plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=all' , 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network') . '" class="edit">' . __('Network Enable') . '</a>';
   			array_unshift( $install_actions, $newLink ); 
   			return $install_actions; 
   			}
