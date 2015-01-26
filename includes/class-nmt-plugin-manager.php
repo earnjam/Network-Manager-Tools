@@ -32,6 +32,8 @@ class NMT_Plugin_Manager {
 
 		// Add the new plugin action links on the Network Plugins screen
 		add_filter( 'network_admin_plugin_action_links', array( $this, 'network_plugin_action_links' ), 10, 4 );
+		
+		// Add the new plugin action links on the single plugin activation confirmation screen
 		add_filter( 'install_plugin_complete_actions', array( $this, 'plugin_installed_options_link' ), 10, 3 );
 		
 		// Enabled Plugins filter for single site admins
@@ -109,6 +111,7 @@ class NMT_Plugin_Manager {
 	 * @param $plugin_file
 	 *
 	 * @return array
+	 * @author Ben Meredith <ben.meredith@gmail.com>
 	 */
 	 
 		public function plugin_installed_options_link( $install_actions, $api, $plugin_file ) { 
