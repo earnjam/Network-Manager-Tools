@@ -32,7 +32,10 @@ class NMT_Plugin_Manager {
 
 		// Add the new plugin action links on the Network Plugins screen
 		add_filter( 'network_admin_plugin_action_links', array( $this, 'network_plugin_action_links' ), 10, 4 );
-
+		
+		// Add the new plugin action links on the single plugin activation confirmation screen
+		add_filter( 'install_plugin_complete_actions', array( $this, 'plugin_installed_options_link' ), 10, 3 );
+		
 		// Enabled Plugins filter for single site admins
 		add_filter( 'all_plugins', array( $this, 'remove_plugins' ) );
 
@@ -101,7 +104,25 @@ class NMT_Plugin_Manager {
 		return array_merge( $new_actions, $actions );
 
 	}
+	
+	/** 
+	 * @param $install_actions
+	 * @param $api
+	 * @param $plugin_file
+	 *
+	 * @return array
+	 * @author Ben Meredith <ben.meredith@gmail.com>
+	 */
+	 
+	public function plugin_installed_options_link( $install_actions, $api, $plugin_file ) { 
 
+		$new_link = '<a href="' . wp_nonce_url( 'plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=all' , 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network') . '" class="edit">' . __('Network Enable') . '</a>';
+		array_unshift( $install_actions, $new_link );
+
+		return $install_actions;
+
+	}
+  			
 	/**
 	 * @return array|mixed
 	 */
