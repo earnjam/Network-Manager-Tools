@@ -47,7 +47,7 @@ class NMT_Plugin_Manager {
 	public function add_pages() {
 
 		// Adds our Individual Site Plugin management page - Only accesible via the Edit Site pages tabs
-		add_submenu_page( null, __('Plugins', 'network-manager-tools'), __('Plugins', 'network-manager-tools'), 'manage_network', 'nmt_site_plugins', array( $this, 'site_plugins_tab' ) );
+		add_submenu_page( null, 'Edit Site: Plugins', 'Edit Site: Plugins', 'manage_network', 'nmt_site_plugins', array( $this, 'site_plugins_tab' ) );
 
 	}
 
