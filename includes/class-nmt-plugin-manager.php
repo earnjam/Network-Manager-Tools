@@ -47,7 +47,7 @@ class NMT_Plugin_Manager {
 	public function add_pages() {
 
 		// Adds our Individual Site Plugin management page - Only accesible via the Edit Site pages tabs
-		add_submenu_page( null, 'Edit Site: Plugins', 'Edit Site: Plugins', 'manage_network', 'nmt_site_plugins', array( $this, 'site_plugins_tab' ) );
+		add_submenu_page( null, __('Plugins', 'network-manager-tools'), __('Plugins', 'network-manager-tools'), 'manage_network', 'nmt_site_plugins', array( $this, 'site_plugins_tab' ) );
 
 	}
 
@@ -95,9 +95,9 @@ class NMT_Plugin_Manager {
 
 		if ( ! is_plugin_active( $plugin_file ) && current_user_can( 'manage_network_plugins' ) ) {
 			if ( ! $this->is_network_enabled( $plugin_file ) ) {
-				$new_actions['enable'] = '<a href="' . wp_nonce_url('plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=' . $context, 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network') . '" class="edit">' . __('Network Enable') . '</a>';
+				$new_actions['enable'] = '<a href="' . wp_nonce_url('plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=' . $context, 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network', 'network-manager-tools' ) . '" class="edit">' . __('Network Enable', 'network-manager-tools' ) . '</a>';
 			} else {
-				$new_actions['disable'] = '<a href="' . wp_nonce_url('plugins.php?action=disable&amp;plugin=' . $plugin_file . '&plugin_status=' . $context, 'disable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Disable this plugin for all sites in this network') . '" class="edit">' . __('Network Disable') . '</a>';
+				$new_actions['disable'] = '<a href="' . wp_nonce_url('plugins.php?action=disable&amp;plugin=' . $plugin_file . '&plugin_status=' . $context, 'disable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Disable this plugin for all sites in this network', 'network-manager-tools' ) . '" class="edit">' . __('Network Disable', 'network-manager-tools' ) . '</a>';
 			}
 		}
 
@@ -116,7 +116,7 @@ class NMT_Plugin_Manager {
 	 
 	public function plugin_installed_options_link( $install_actions, $api, $plugin_file ) { 
 
-		$new_link = '<a href="' . wp_nonce_url( 'plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=all' , 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__('Enable this plugin for all sites in this network') . '" class="edit">' . __('Network Enable') . '</a>';
+		$new_link = '<a href="' . wp_nonce_url( 'plugins.php?action=enable&amp;plugin=' . $plugin_file . '&plugin_status=all' , 'enable-plugin_' . $plugin_file ) . '" title="' . esc_attr__( 'Enable this plugin for all sites in this network', 'network-manager-tools' ) . '" class="edit">' . __( 'Network Enable', 'network-manager-tools' ) . '</a>';
 		array_unshift( $install_actions, $new_link );
 
 		return $install_actions;
@@ -289,9 +289,9 @@ class NMT_Plugin_Manager {
 		foreach ( $views as $key => $link ) {
 			if ( 'upgrade' == $key ) {
 				$current = ( 'enabled' == $status ) ? ' class=current' : '';
-				$new_views['enabled'] = '<a href="plugins.php?plugin_status=enabled"' . $current .'>Enabled <span class="count">(' . $totals['enabled'] . ')</span></a>';
+				$new_views['enabled'] = '<a href="plugins.php?plugin_status=enabled"' . $current .'>' . __( 'Enabled', 'network-manager-tools' ) . '<span class="count">(' . $totals['enabled'] . ')</span></a>';
 				$current = ( 'disabled' == $status ) ? ' class=current' : '';
-				$new_views['disabled'] = '<a href="plugins.php?plugin_status=disabled"' . $current .'>Disabled <span class="count">(' . $totals['disabled'] . ')</span></a>';
+				$new_views['disabled'] = '<a href="plugins.php?plugin_status=disabled"' . $current .'>' . __( 'Disabled', 'network-manager-tools' ) . '<span class="count">(' . $totals['disabled'] . ')</span></a>';
 			}
 			$new_views[ $key ] = $link;
 		}
@@ -309,11 +309,11 @@ class NMT_Plugin_Manager {
 		$id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;
 
 		if ( ! $id )
-			wp_die( __('Invalid site ID.') );
+			wp_die( __( 'Invalid site ID.', 'network-manager-tools' ) );
 
 		$details = get_blog_details( $id );
 		if ( ! can_edit_network( $details->site_id ) )
-			wp_die( __( 'You do not have permission to access this page.' ) );
+			wp_die( __( 'You do not have permission to access this page.', 'network-manager-tools'  ) );
 
 		switch_to_blog($id);
 
@@ -329,36 +329,36 @@ class NMT_Plugin_Manager {
 				switch ( $_GET['action'] ) {
 					case 'activate_plugin':
 						activate_plugin( $action_plugin );
-						$message = 'Plugin activated';
+						$message = __( 'Plugin activated', 'network-manager-tools' );
 						break;
 					case 'deactivate_plugin':
 						deactivate_plugins( $action_plugin, false, false );
-						$message = 'Plugin deactivated.';
+						$message = __( 'Plugin deactivated', 'network-manager-tools' );
 						break;
 					case 'enable_plugin':
 						$site_allowed_plugins[$action_plugin] = time();
 						ksort( $site_allowed_plugins );
 						update_option( 'nmt_allowedplugins', $site_allowed_plugins );
-						$message = 'Plugin enabled.';
+						$message = __( 'Plugin enabled', 'network-manager-tools' );
 						break;
 					case 'disable_plugin':
 						unset( $site_allowed_plugins[$action_plugin] );
 						update_option( 'nmt_allowedplugins', $site_allowed_plugins );
-						$message = 'Plugin disabled.';
+						$message = __( 'Plugin disabled', 'network-manager-tools' );
 						break;
 					default:
-						$message = 'Error: Invalid action.';
+						$message = __( 'Error: Invalid action.', 'network-manager-tools' );
 						break;
 				}
 			} else {
-				$message = 'Error: Invalid plugin name.';
+				$message = __( 'Error: Invalid plugin name.', 'network-manager-tools' );
 			}
 		}
 
 		$enabled_plugins = $this->get_network_enabled_plugins() + $site_allowed_plugins;
 
 		$site_url_no_http = preg_replace( '#^http(s)?://#', '', get_blogaddress_by_id( $id ) );
-		$title_site_url_linked = sprintf( __('Edit Site: <a href="%1$s">%2$s</a>'), get_blogaddress_by_id( $id ), $site_url_no_http );
+		$title_site_url_linked = sprintf( __( 'Edit Site', 'network-manager-tools') . ': <a href="%1$s">%2$s</a>', get_blogaddress_by_id( $id ), $site_url_no_http );
 
 		?>
 		<div class="wrap">
@@ -369,11 +369,11 @@ class NMT_Plugin_Manager {
 		<h3 class="nav-tab-wrapper">
 			<?php
 			$tabs = array(
-				'site-info'     => array( 'label' => __( 'Info' ),     'url' => 'site-info.php'     ),
-				'site-users'    => array( 'label' => __( 'Users' ),    'url' => 'site-users.php'    ),
-				'site-themes'   => array( 'label' => __( 'Themes' ),   'url' => 'site-themes.php'   ),
-				'site-plugins'  => array( 'label' => __( 'Plugins' ),  'url' => 'sites.php?page=nmt_site_plugins'),
-				'site-settings' => array( 'label' => __( 'Settings' ), 'url' => 'site-settings.php' ),
+				'site-info'     => array( 'label' => __( 'Info', 'network-manager-tools' ),     'url' => 'site-info.php'     ),
+				'site-users'    => array( 'label' => __( 'Users', 'network-manager-tools' ),    'url' => 'site-users.php'    ),
+				'site-themes'   => array( 'label' => __( 'Themes', 'network-manager-tools' ),   'url' => 'site-themes.php'   ),
+				'site-plugins'  => array( 'label' => __( 'Plugins', 'network-manager-tools' ),  'url' => 'sites.php?page=nmt_site_plugins'),
+				'site-settings' => array( 'label' => __( 'Settings', 'network-manager-tools' ), 'url' => 'site-settings.php' ),
 			);
 			foreach ( $tabs as $tab_id => $tab ) {
 				$class = ( $tab['url'] == $pagenow || $tab['url'] == $pagenow . '?page=nmt_site_plugins' ) ? ' nav-tab-active' : '';
@@ -383,30 +383,30 @@ class NMT_Plugin_Manager {
 			?>
 		</h3>
 			<ul class="subsubsub">
-				<li class="all"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>" <?php if($filter == 'all') echo 'class="current"'; ?>>All <span class="count">(<?php echo count($plugins); ?>)</span></a> | </li>
-				<li class="active"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>&amp;plugin_status=active" <?php if($filter == 'active') echo 'class="current"'; ?>>Active <span class="count">(<?php echo count($active_plugins); ?>)</span></a> | </li>
-				<li class="enabled"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>&amp;plugin_status=enabled" <?php if($filter == 'enabled') echo 'class="current"'; ?>>Enabled <span class="count">(<?php echo count($enabled_plugins); ?>)</span></a></li>
+				<li class="all"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>" <?php if($filter == 'all') echo 'class="current"'; ?>><?php _e( 'All', 'network-manager-tools' ); ?><span class="count">(<?php echo count($plugins); ?>)</span></a> | </li>
+				<li class="active"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>&amp;plugin_status=active" <?php if($filter == 'active') echo 'class="current"'; ?>><?php _e( 'Active', 'network-manager-tools' ); ?><span class="count">(<?php echo count($active_plugins); ?>)</span></a> | </li>
+				<li class="enabled"><a href="sites.php?page=nmt_site_plugins&amp;id=<?php echo $id; ?>&amp;plugin_status=enabled" <?php if($filter == 'enabled') echo 'class="current"'; ?>><?php _e( 'Enabled', 'network-manager-tools' ); ?><span class="count">(<?php echo count($enabled_plugins); ?>)</span></a></li>
 			</ul>
 
 			<table class="wp-list-table widefat plugins">
 				<thead>
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
-						<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+						<label class="screen-reader-text" for="cb-select-all-1"><?php _e( 'Select All', 'network-manager-tools' ); ?></label>
 						<input id="cb-select-all-1" type="checkbox">
 					</th>
-					<th scope="col" id="name" class="manage-column column-name" style="">Plugin</th>
-					<th scope="col" id="description" class="manage-column column-description" style="">Description</th>
+					<th scope="col" id="name" class="manage-column column-name" style=""><?php _e( 'Plugin', 'network-manager-tools' ); ?></th>
+					<th scope="col" id="description" class="manage-column column-description" style=""><?php _e( 'Description', 'network-manager-tools' ); ?></th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
-						<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+						<label class="screen-reader-text" for="cb-select-all-1"><?php _e( 'Select All', 'network-manager-tools' ); ?></label>
 						<input id="cb-select-all-1" type="checkbox">
 					</th>
-					<th scope="col" id="name" class="manage-column column-name" style="">Plugin</th>
-					<th scope="col" id="description" class="manage-column column-description" style="">Description</th>
+					<th scope="col" id="name" class="manage-column column-name" style=""><?php _e( 'Plugin', 'network-manager-tools' ); ?></th>
+					<th scope="col" id="description" class="manage-column column-description" style=""><?php _e( 'Description', 'network-manager-tools' ); ?></th>
 				</tr>
 				</tfoot>
 				<tbody>
@@ -436,7 +436,7 @@ class NMT_Plugin_Manager {
 					$network = is_plugin_active_for_network( $plugin );
 
 					$checkbox_id =  "checkbox_" . md5( $plugin_data['Name']);
-					$checkbox = "<label class='screen-reader-text' for='" . $checkbox_id . "' >" . sprintf( __( 'Select %s' ), $plugin_data['Name'] ) . "</label>"
+					$checkbox = "<label class='screen-reader-text' for='" . $checkbox_id . "' >" . sprintf( __( 'Select %s', 'network-manager-tools' ), $plugin_data['Name'] ) . "</label>"
 					            . "<input type='checkbox' name='checked[]' value='" . esc_attr( $plugin ) . "' id='" . $checkbox_id . "' />";
 
 
@@ -448,21 +448,21 @@ class NMT_Plugin_Manager {
 							<div class="row-actions visible">
 								<?php
 								if ( $network ) {
-									echo 'Network Activated';
+									echo __( 'Network Activated', 'network-manager-tools' );
 								} elseif ( $active ) {
 									$actions = array( 'action' => 'deactivate_plugin', 'plugin_name' => urlencode( $plugin ) );
-									echo '<a href="'.add_query_arg( $actions ).'">Deactivate</a>';
+									echo '<a href="'.add_query_arg( $actions ).'">' . __('Deactivate', 'network-manager-tools' ) . '</a>';
 								} else {
 									$actions = array( 'action' => 'activate_plugin', 'plugin_name' => urlencode( $plugin ) );
-									echo '<a href="'.add_query_arg( $actions ).'">Activate</a>';
+									echo '<a href="'.add_query_arg( $actions ).'">' . __('Activate', 'network-manager-tools' ) . '</a>';
 									if ( $this->is_network_enabled( $plugin ) ) {
-										echo ' | Network Enabled';
+										echo ' | ' . __( 'Network Enabled', 'network-manager-tools' );
 									} elseif ( isset( $enabled_plugins[$plugin] ) ) {
 										$actions = array( 'action' => 'disable_plugin', 'plugin_name' => urlencode( $plugin ) );
-										echo ' | <a href="'.add_query_arg( $actions ).'">Disable</a>';
+										echo ' | <a href="'.add_query_arg( $actions ).'">' . __( 'Disable', 'network-manager-tools' ) . '</a>';
 									} else {
 										$actions = array( 'action' => 'enable_plugin', 'plugin_name' => urlencode( $plugin ) );
-										echo ' | <a href="'.add_query_arg( $actions ).'">Enable</a>';
+										echo ' | <a href="'.add_query_arg( $actions ).'">' . __( 'Enable', 'network-manager-tools' ) . '</a>';
 									}
 
 								} ?>
@@ -473,15 +473,15 @@ class NMT_Plugin_Manager {
 							<div class='second plugin-version-author-uri'>
 								<?php $plugin_meta = array();
 								if ( ! empty( $plugin_data['Version'] ) )
-									$plugin_meta[] = sprintf( __( 'Version %s' ), $plugin_data['Version'] );
+									$plugin_meta[] = sprintf( __( 'Version %s', 'network-manager-tools' ), $plugin_data['Version'] );
 								if ( ! empty( $plugin_data['Author'] ) ) {
 									$author = $plugin_data['Author'];
 									if ( ! empty( $plugin_data['AuthorURI'] ) )
-										$author = '<a href="' . $plugin_data['AuthorURI'] . '" title="' . esc_attr__( 'Visit author homepage' ) . '">' . $plugin_data['Author'] . '</a>';
-									$plugin_meta[] = sprintf( __( 'By %s' ), $author );
+										$author = '<a href="' . $plugin_data['AuthorURI'] . '" title="' . esc_attr__( 'Visit author homepage', 'network-manager-tools' ) . '">' . $plugin_data['Author'] . '</a>';
+									$plugin_meta[] = sprintf( __( 'By %s', 'network-manager-tools' ), $author );
 								}
 								if ( ! empty( $plugin_data['PluginURI'] ) )
-									$plugin_meta[] = '<a href="' . $plugin_data['PluginURI'] . '" title="' . esc_attr__( 'Visit plugin site' ) . '">' . __( 'Visit plugin site' ) . '</a>';
+									$plugin_meta[] = '<a href="' . $plugin_data['PluginURI'] . '" title="' . esc_attr__( 'Visit plugin site', 'network-manager-tools' ) . '">' . __( 'Visit plugin site', 'network-manager-tools' ) . '</a>';
 								echo implode( ' | ', $plugin_meta );
 								?>
 							</div>

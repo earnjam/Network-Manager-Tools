@@ -155,7 +155,7 @@ class NMT_Site_Info {
 	 */
 	public function add_pages() {
 
-		$this->admin_pages['site_info'] = add_submenu_page( 'sites.php', 'Site Information', 'Site Information', 'manage_network', 'nmt_site_info', array( $this, 'site_information' ) );
+		$this->admin_pages['site_info'] = add_submenu_page( 'sites.php', __('Site Information', 'network-manager-tools' ), __('Site Information', 'network-manager-tools' ), 'manage_network', 'nmt_site_info', array( $this, 'site_information' ) );
 		// Future Admin Message functionality
 		// $this->admin_pages['admin_message'] = add_menu_page( 'Admin Messages', 'Admin Messages', 'manage_network', 'admin_message', array( $this, 'admin_message' ), 'dashicons-megaphone', 3 );
 
@@ -174,18 +174,15 @@ class NMT_Site_Info {
 	public function site_information() {
 
 		// Output the Site Info Page
-		echo '<div class="wrap"><h2>Network Site Information</h2>';
+		echo '<div class="wrap"><h2>' . __('Network Site Information', 'network-manager-tools' ) . '</h2>';
 
 		if ( ! $this->db->has_site_data() ) {
 
-			echo '<p>Thanks for installing Network Manager Tools! This screen will help you easily see which
-			sites on your network are using which theme and plugin.</p>';
-			echo '<p>In order to make displaying the individual site data as efficient as possible,
-			we need to do an initial scan of the database to build the index of active themes and plugins.
-			This may take some time depending on the size of your network.</p>';
+			echo '<p>' . __('Thanks for installing Network Manager Tools! This screen will help you easily see which sites on your network are using which theme and plugin.', 'network-manager-tools' ) . '</p>';
+			echo '<p>' . __('In order to make displaying the individual site data as efficient as possible, we need to do an initial scan of the database to build the index of active themes and plugins. This may take some time depending on the size of your network.', 'network-manager-tools' ) . '</p>';
 
 			echo '<form action="" method="POST" id="site-info-form">';
-			echo '<input type="submit" name="submit" id="submit" class="button button-primary" value="Build the Index">';
+			echo '<input type="submit" name="submit" id="submit" class="button button-primary" value="' . __( 'Build the Index', 'network-manager-tools' ) . '">';
 			echo '</form>';
 			echo '<div class="progress" style="display: none;"><div class="percent"></div></div>';
 
@@ -216,44 +213,44 @@ class NMT_Site_Info {
 
 				$screen->add_help_tab( array(
 					'id'      => 'overview',
-					'title'   => __( 'Overview' ),
+					'title'   => __( 'Overview', 'network-manager-tools'  ),
 					'content' =>
-						'<p>The Site Information Screen is a better way of managing the sites in your Multisite Network.</p>' .
-						'<p>From here you can: ' .
+						'<p>' . __( 'The Site Information Screen is a better way of managing the sites in your Multisite Network.', 'network-manager-tools') . '</p>' .
+						'<p>' . __( 'From here you can:','network-manager-tools') .  
 						'<ul>' .
-						'<li>Search for sites in your network</li>' .
-						'<li>Modify or remove sites from your network</li>' .
-						'<li>Search for a specific theme or plugin to see which sites are using it</li>' .
-						'</ul>'
+						'<li>' . __( 'Search for sites in your network', 'network-manager-tools') . '</li>' .
+						'<li>' . __( 'Modify or remove sites from your network', 'network-manager-tools') . '</li>' .
+						'<li>' . __( 'Search for a specific theme or plugin to see which sites are using it', 'network-manager-tools') . '</li>' .
+						'</ul>' . '</p>'
 				) );
 				$screen->add_help_tab( array(
 					'id'      => 'site-actions',
-					'title'   => __( 'Site Actions' ),
+					'title'   => __( 'Site Actions', 'network-manager-tools' ),
 					'content' =>
-						'<p>Hovering over each site reveals seven actions you can perform on that site (three for the primary site): </p>' .
+						'<p>' . __( 'Hovering over each site reveals seven actions you can perform on that site (three for the primary site)', 'network-manager-tools') . ': </p>' .
 						'<ul>' .
-						'<li><strong>Clicking Dashboard</strong> takes you to the Dashboard screen for that site</li>' .
-						'<li><strong>Clicking Deactivate, Archive, or Spam</strong> performs the specified action with a confirmation screen</li>' .
-						'<li><strong>Clicking Delete</strong> permanently deletes a site from your network, following a confirmation screen</li>' .
-						'<li><strong>Clicking Visit</strong> takes you to the front-end view of the site</li>' .
+						'<li>' . __( '<strong>Clicking Dashboard</strong> takes you to the Dashboard screen for that site', 'network-manager-tools') . '</li>' .
+						'<li>' . __( '<strong>Clicking Deactivate, Archive, or Spam</strong> performs the specified action with a confirmation screen', 'network-manager-tools') . '</li>' .
+						'<li>' . __( '<strong>Clicking Delete</strong> permanently deletes a site from your network, following a confirmation screen', 'network-manager-tools') . '</li>' .
+						'<li>' . __( '<strong>Clicking Visit</strong> takes you to the front-end view of the site', 'network-manager-tools') . '</li>' .
 						'</ul>'
 				) );
 				$screen->add_help_tab( array(
 					'id'      => 'searching',
-					'title'   => __( 'Searching' ),
+					'title'   => __( 'Searching', 'network-manager-tools' ),
 					'content' =>
-						'<p>By default the table displays 10 sites, but the search box will perform an instant search over the entire network.</p>' .
-						'<p>The search features an autocomplete list pre-filled with all of the installed themes and plugins.</p>' .
-						'<p>The table will be filtered with every letter typed. It finds exact matches based on the entire search field. For instance: </p>' .
-						'<blockquote>A search for "Network Manager" would match "Network Manager Tools", however a search for "Network Tools" would not find this plugin.</blockquote>' .
-						'<p>This is so that you can find specific themes, plugins, sites and administrators when you may have a number of similar names across the network.</p>'
+						'<p>' . __( 'By default the table displays 10 sites, but the search box will perform an instant search over the entire network.', 'network-manager-tools') . '</p>' .
+						'<p>' . __( 'The search features an autocomplete list pre-filled with all of the installed themes and plugins.', 'network-manager-tools') . '</p>' .
+						'<p>' . __( 'The table will be filtered with every letter typed. It finds exact matches based on the entire search field. For instance:', 'network-manager-tools') . '</p>' .
+						'<blockquote>' . __('A search for /"Network Manager/" would match /"Network Manager Tools/", however a search for /"Network Tools/" would not find this plugin.', 'network-manager-tools') . '</blockquote>' .
+						'<p>' . __('This is so that you can find specific themes, plugins, sites and administrators when you may have a number of similar names across the network.', 'network-manager-tools') . '</p>'
 
 				) );
 
 				$screen->set_help_sidebar(
-					'<p><strong>' . __( 'For more information:' ) . '</strong></p>' .
-					'<p>' . __( '<a href="http://codex.wordpress.org/Network_Admin_Sites_Screen" target="_blank">Documentation on Site Management</a>' ) . '</p>' .
-					'<p>' . __( '<a href="http://wordpress.org/support/forum/multisite/" target="_blank">Support Forums</a>' ) . '</p>'
+					'<p><strong>' . __( 'For more information:', 'network-manager-tools' ) . '</strong></p>' .
+					'<p><a href="http://codex.wordpress.org/Network_Admin_Sites_Screen" target="_blank">' . __('Documentation on Site Management' , 'network-manager-tools'  ) . '</a></p>' .
+					'<p><a href="http://wordpress.org/support/forum/multisite/" target="_blank">' . __( 'Support Forums', 'network-manager-tools'  ) . '</a></p>'
 				);
 
 				break;
